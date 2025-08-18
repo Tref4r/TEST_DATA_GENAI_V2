@@ -1,0 +1,31 @@
+Benchmark Results for collection: benchmark_100
+Date: 2025-08-18 12:04:46
+==================================================
+
+Benchmark Results:
+==================================================
+
+Insertion:
+  Average time: 0.0495 seconds
+  Standard deviation: 0.0138 seconds
+  Number of operations: 100
+
+Search:
+  Average time: 0.0395 seconds
+  Standard deviation: 0.0070 seconds
+  Number of operations: 3
+
+Batch_search:
+  Average time: 0.0470 seconds
+  Standard deviation: 0.0000 seconds
+  Number of operations: 1
+
+Update:
+  Average time: 0.0518 seconds
+  Standard deviation: 0.0144 seconds
+  Number of operations: 10
+
+Delete:
+  Average time: 0.0293 seconds
+  Standard deviation: 0.0058 seconds
+  Number of operations: 10
