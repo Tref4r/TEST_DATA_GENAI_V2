@@ -83,7 +83,9 @@ def generate_response(model, tokenizer, instruction, input_text=None, max_length
 
 def main():
     # Load model and adapter
-    base_model = "facebook/opt-350m"  # Same as training
+    # Base model should mirror the one used during training.  For our chat
+    # fine‑tuning we use the bilingual Qwen 1.5–1.8 B model.
+    base_model = "Qwen/Qwen1.5-1.8B-Chat"
     adapter_path = "outputs"  # Path to your trained adapter
     
     print("Loading model...")

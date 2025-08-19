@@ -1,9 +1,9 @@
 ---
-base_model: facebook/opt-350m
+base_model: Qwen/Qwen1.5-1.8B-Chat
 library_name: peft
 pipeline_tag: text-generation
 tags:
-- base_model:adapter:facebook/opt-350m
+- base_model:adapter:Qwen/Qwen1.5-1.8B-Chat
 - lora
 - transformers
 ---

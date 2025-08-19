@@ -1,7 +1,7 @@
 {
   "alpha_pattern": {},
   "auto_mapping": null,
-  "base_model_name_or_path": "facebook/opt-350m",
+  "base_model_name_or_path": "Qwen/Qwen1.5-1.8B-Chat",
   "bias": "none",
   "corda_config": null,
   "eva_config": null,
@@ -26,8 +26,11 @@
   "revision": null,
   "target_modules": [
     "k_proj",
-    "o_proj",
+    "down_proj",
+    "up_proj",
     "q_proj",
+    "o_proj",
+    "gate_proj",
     "v_proj"
   ],
   "target_parameters": null,

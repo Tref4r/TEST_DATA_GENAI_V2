@@ -1,31 +1,43 @@
 {
-  "add_bos_token": true,
   "add_prefix_space": false,
   "added_tokens_decoder": {
-    "1": {
-      "content": "<pad>",
+    "151643": {
+      "content": "<|endoftext|>",
       "lstrip": false,
-      "normalized": true,
+      "normalized": false,
       "rstrip": false,
       "single_word": false,
       "special": true
     },
-    "2": {
-      "content": "</s>",
+    "151644": {
+      "content": "<|im_start|>",
       "lstrip": false,
-      "normalized": true,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "151645": {
+      "content": "<|im_end|>",
+      "lstrip": false,
+      "normalized": false,
       "rstrip": false,
       "single_word": false,
       "special": true
     }
   },
-  "bos_token": "</s>",
+  "additional_special_tokens": [
+    "<|im_start|>",
+    "<|im_end|>"
+  ],
+  "bos_token": null,
   "clean_up_tokenization_spaces": false,
-  "eos_token": "</s>",
+  "eos_token": "<|im_end|>",
   "errors": "replace",
   "extra_special_tokens": {},
-  "model_max_length": 1000000000000000019884624838656,
-  "pad_token": "</s>",
-  "tokenizer_class": "GPT2Tokenizer",
-  "unk_token": "</s>"
+  "model_max_length": 32768,
+  "pad_token": "<|im_end|>",
+  "split_special_tokens": false,
+  "tokenizer_class": "Qwen2Tokenizer",
+  "unk_token": null
 }
