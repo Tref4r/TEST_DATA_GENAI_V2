@@ -6,8 +6,9 @@ This folder contains a practical demonstration of fine-tuning a large language m
 
 1. Create conda environment:
 ```bash
-conda env create -f environment.yml
+conda create -n finetune_demo python=3.10
 conda activate finetune_demo
+pip install -r requirements.txt
 ```
 
 2. Verify CUDA setup:
@@ -19,9 +20,10 @@ print(f"Current device: {torch.cuda.get_device_name(0)}")
 
 ## Project Structure
 
-- `environment.yml`: Conda environment configuration
+- `requirements.txt`: Python environment configuration
 - `train.py`: Main training script with QLoRA implementation
 - `inference.py`: Script for inference using the fine-tuned model
+- `eval.py`: Script for evaluating the model performance
 - `outputs/`: Directory for saving model checkpoints and logs
 
 ## Implementation Details
@@ -60,7 +62,10 @@ python train.py
 ```bash
 python inference.py
 ```
-
+3. Evaluation:
+```bash
+python eval.py
+```
 ## Memory Management
 
 The implementation uses several techniques to fit within 6GB VRAM:
