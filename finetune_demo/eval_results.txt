@@ -1,0 +1,4 @@
+Evaluation results
+Samples: 50
+Exact Match: 0.0000
+F1: 0.5346
