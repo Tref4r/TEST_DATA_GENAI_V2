@@ -7,6 +7,44 @@ Save aggregated results to a text file.
 import torch
 from datasets import load_dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer
+# Additional imports for BLEU and ROUGE-L metrics
+from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
+
+
+def rouge_l_score(pred_tokens, label_tokens):
+    """Compute ROUGE-L F1 score between two token lists.
+
+    ROUGE-L is based on the Longest Common Subsequence (LCS). This implementation
+    computes the LCS length via dynamic programming and then derives precision,
+    recall and the F1 measure. All tokens should be preprocessed (e.g. lowercased)
+    before being passed to this function.
+
+    Args:
+        pred_tokens (List[str]): Tokenised prediction.
+        label_tokens (List[str]): Tokenised reference (ground truth).
+
+    Returns:
+        float: ROUGE-L F1 score (between 0 and 1).
+    """
+    m, n = len(pred_tokens), len(label_tokens)
+    # edge case: if either sequence is empty
+    if m == 0 or n == 0:
+        return 0.0
+    # build LCS table
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    for i in range(m):
+        for j in range(n):
+            if pred_tokens[i] == label_tokens[j]:
+                dp[i + 1][j + 1] = dp[i][j] + 1
+            else:
+                dp[i + 1][j + 1] = max(dp[i][j + 1], dp[i + 1][j])
+    lcs_len = dp[m][n]
+    precision = lcs_len / m
+    recall = lcs_len / n
+    # avoid division by zero
+    if precision + recall == 0:
+        return 0.0
+    return (2 * precision * recall) / (precision + recall)
 
 # ======================
 # Config
@@ -113,6 +151,7 @@ if __name__ == "__main__":
     small_eval_dataset = eval_dataset.select(range(min(MAX_EVAL_SAMPLES, len(eval_dataset))))
 
     em_scores, f1_scores = [], []
+    bleu_scores, rouge_scores = [], []
 
     # Loop over eval samples
     for example in small_eval_dataset:
@@ -133,16 +172,31 @@ if __name__ == "__main__":
         em, f1 = exact_match_and_f1(pred, label)
         em_scores.append(em)
         f1_scores.append(f1)
+        # Compute BLEU and ROUGE-L on lowercased token lists
+        pred_tokens = pred.strip().lower().split()
+        label_tokens = label.strip().lower().split()
+        try:
+            bleu = sentence_bleu([label_tokens], pred_tokens, smoothing_function=SmoothingFunction().method1)
+        except Exception:
+            # Fallback to zero if BLEU computation fails
+            bleu = 0.0
+        rouge = rouge_l_score(pred_tokens, label_tokens)
+        bleu_scores.append(bleu)
+        rouge_scores.append(rouge)
 
     # Tính trung bình
     avg_em = sum(em_scores) / len(em_scores)
     avg_f1 = sum(f1_scores) / len(f1_scores)
+    avg_bleu = sum(bleu_scores) / len(bleu_scores) if bleu_scores else 0.0
+    avg_rouge = sum(rouge_scores) / len(rouge_scores) if rouge_scores else 0.0
 
     # In ra console
     print("==================================================")
     print("Final Evaluation results on", len(small_eval_dataset), "samples")
     print("Exact Match:", avg_em)
     print("F1:", avg_f1)
+    print("BLEU:", avg_bleu)
+    print("ROUGE-L:", avg_rouge)
 
     # Ghi ra file
     with open(RESULTS_FILE, "w", encoding="utf-8") as f:
@@ -150,5 +204,7 @@ if __name__ == "__main__":
         f.write(f"Samples: {len(small_eval_dataset)}\n")
         f.write(f"Exact Match: {avg_em:.4f}\n")
         f.write(f"F1: {avg_f1:.4f}\n")
+        f.write(f"BLEU: {avg_bleu:.4f}\n")
+        f.write(f"ROUGE-L: {avg_rouge:.4f}\n")
 
     print(f"Saved results to {RESULTS_FILE}")

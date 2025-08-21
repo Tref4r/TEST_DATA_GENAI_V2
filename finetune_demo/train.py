@@ -251,7 +251,7 @@ def train():
         # Note: older versions of transformers may not support `evaluation_strategy`.
         # We omit it here and call `trainer.evaluate()` manually after training.
         logging_dir="logs",
-        report_to="none",  # disable external reporters
+        report_to="tensorboard",  # disable external reporters
     )
 
     trainer = Trainer(

@@ -1,4 +1,6 @@
 Evaluation results
 Samples: 50
 Exact Match: 0.0000
-F1: 0.5346
+F1: 0.5368
+BLEU: 0.7053
+ROUGE-L: 0.8136
